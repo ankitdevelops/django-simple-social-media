@@ -9,4 +9,3 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ["name", "username", "email", "joined", "last_login"]
     list_filter = ["username", "email"]
     date_hierarchy = "joined"
-    readonly_fields = ("password", "username")
