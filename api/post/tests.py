@@ -43,11 +43,9 @@ class PostAPITestCase(TestCase):
         post_data = {
             "description": "This is a test post.",
         }
-
         response = self.client.post("/api/posts/", post_data)
-
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data["title"][0], "This field is required.")
+        self.assertEqual(response.data, {"title": ["This field is required."]})
         final_post_count = Post.objects.filter(author=self.user).count()
         self.assertEqual(final_post_count, initial_post_count)
 

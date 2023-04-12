@@ -27,10 +27,8 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = "django-insecure-m6wf5t*09%cu3n+1fzke7)dbycab0(g4n$!k0ni)z!+t#p6^$l"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DEBUG = os.getenv("DEBUG", "0").lower() in ["true", "t", "1"]
-
-ALLOWED_HOSTS = ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(" ")
-
+DEBUG = bool(int(os.getenv("DEBUG")))
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(" ")
 
 # Application definition
 
@@ -49,17 +47,28 @@ INSTALLED_APPS = [
     "api.user.apps.UserConfig",
     "api.post.apps.PostConfig",
 ]
-
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-]
+if DEBUG:
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        # "whitenoise.middleware.WhiteNoiseMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    ]
+else:
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        "whitenoise.middleware.WhiteNoiseMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    ]
 
 ROOT_URLCONF = "coreProj.urls"
 
@@ -85,27 +94,23 @@ WSGI_APPLICATION = "coreProj.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": "social_media",
-#         "USER": "postgres",
-#         "PASSWORD": "ankit93",
-#         "HOST": "localhost",
-#         "PORT": "5432",
-#     }
-# }
-
-DATABASES = {
-    "default": dj_database_url.parse(os.environ.get("DATABASE_URL"), conn_max_age=600),
-}
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": "social_media",
+            "USER": "postgres",
+            "PASSWORD": "ankit93",
+            "HOST": "localhost",
+            "PORT": "5432",
+        }
+    }
+else:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            os.environ.get("DATABASE_URL"), conn_max_age=600
+        ),
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
