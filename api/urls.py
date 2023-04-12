@@ -3,7 +3,11 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from api.user.views import UserListView, FollowUserView, UnFollowUserView
+from api.user.views import (
+    FollowUserView,
+    UnFollowUserView,
+    UserProfileView,
+)
 from api.post.views import (
     PostListCreateView,
     PostRetrieveDestroyView,
@@ -16,7 +20,7 @@ from api.post.views import (
 urlpatterns = [
     # user app related routes
     path("authenticate/", TokenObtainPairView.as_view()),
-    path("user/", UserListView.as_view()),
+    path("user/", UserProfileView.as_view()),
     path("follow/<int:userId>/", FollowUserView.as_view()),
     path("unfollow/<int:userId>/", UnFollowUserView.as_view()),
     # post app related routes
