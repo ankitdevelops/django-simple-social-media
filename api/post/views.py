@@ -3,9 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
-from .models import Post
-from .serializers import PostSerializer
+from .models import Post, Comment
+from .serializers import PostSerializer, CommentSerializer
 from .permissions import DeleteOwnPost
 
 # Create your views here.
@@ -81,4 +82,15 @@ class PostListByUserAPIView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Post.objects.filter(author=user).order_by('-created_at')
+        return Post.objects.filter(author=user).order_by("-created_at")
+
+
+class CommentCreateAPIView(CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        post_id = self.kwargs.get("id")
+        post = get_object_or_404(Post, id=post_id)
+        serializer.save(post=post, user=self.request.user)

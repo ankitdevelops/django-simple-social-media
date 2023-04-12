@@ -10,6 +10,7 @@ from api.post.views import (
     PostLikeView,
     PostUnlikeView,
     PostListByUserAPIView,
+    CommentCreateAPIView,
 )
 
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path("like/<int:id>/", PostLikeView.as_view()),
     path("unlike/<int:id>/", PostUnlikeView.as_view()),
     path("all_posts/", PostListByUserAPIView.as_view()),
+    path("comment/<int:id>/", CommentCreateAPIView.as_view()),
 ]
