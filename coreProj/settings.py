@@ -13,10 +13,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+from dotenv import load_dotenv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -25,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-m6wf5t*09%cu3n+1fzke7)dbycab0(g4n$!k0ni)z!+t#p6^$l"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = DEBUG = os.getenv("DEBUG", "0").lower() in ["true", "t", "1"]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -89,15 +91,19 @@ WSGI_APPLICATION = "coreProj.wsgi.application"
 #     }
 # }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "social_media",
+#         "USER": "postgres",
+#         "PASSWORD": "ankit93",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "social_media",
-        "USER": "postgres",
-        "PASSWORD": "ankit93",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
+    "default": dj_database_url.parse(os.environ.get("DATABASE_URL"), conn_max_age=600),
 }
 
 # Password validation
