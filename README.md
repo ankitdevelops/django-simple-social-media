@@ -5,57 +5,71 @@
 - Design the database schema and implement in PostgreSQL or MongoDB
 
 ### **API Endpoints**
+BASE_URL = https://dj-social-api.onrender.com
+- **POST** /api/authenticate/
+- **GET** /api/user/
+- **POST** /api/follow/{userId}/
+- **POST** /api/unfollow/{userId}/
+- **GET** /api/posts/{id}/
+- **GET** /api/all_posts/
+- **DELETE** /api/posts/{postId}/
+- **POST** /api/posts/
+- **POST** /api/like/{postId}/
+- **POST** /api/unlike/{postId}/
+- **POST** /api/comment/{postId}/
 
-- POST /api/authenticate should perform user authentication and return a JWT token.
-    - INPUT: Email, Password
-    - RETURN: JWT token
+### Installation
 
+ Clone the repo
+   ```sh
+   git clone https://github.com/ankitdevelops/django-simple-social-media.git
+   ```
 
-    >**NOTE:** Use dummy email & password for authentication. No need to create endpoint for registering new user.
-    
-    
-- POST /api/follow/{id} authenticated user would follow user with {id}
-- POST /api/unfollow/{id} authenticated user would unfollow a user with {id}
-- GET /api/user should authenticate the request and return the respective user profile.
-    - RETURN: User Name, number of followers & followings.
-- POST api/posts/ would add a new post created by the authenticated user.
-    - Input: Title, Description
-    - RETURN: Post-ID, Title, Description, Created Time(UTC).
-- DELETE api/posts/{id} would delete post with {id} created by the authenticated user.
-- POST /api/like/{id} would like the post with {id} by the authenticated user.
-- POST /api/unlike/{id} would unlike the post with {id} by the authenticated user.
-- POST /api/comment/{id} add comment for post with {id} by the authenticated user.
-    - Input: Comment
-    - Return: Comment-ID
-- GET api/posts/{id} would return a single post with {id} populated with its number of likes and comments
-- GET /api/all_posts would return all posts created by authenticated user sorted by post time.
-    - RETURN: For each post return the following values
-        - id: ID of the post
-        - title: Title of the post
-        - desc: Description of the post
-        - created_at: Date and time when the post was created
-        - comments: Array of comments, for the particular post
-        - likes: Number of likes for the particular post
+   ```sh
+   cd django-simple-social-media
+   ```
+Create a virtual environment and install the dependencies
 
-### **Stacks**
+```sh
+virtualenv env
+pip install -r requirements.txt
 
-- Backend: NodeJS (using ExpressJS or Koa) or Python (using Django). Use other helping libraries.
-- Database: PostgreSQL or MongoDB
+# or only if using pipenv
 
-# Instructions
+pipenv shell
+pipenv install
+```
+### setting  up the database
+- create a db in postgres
+- create a `.env` file in the project root director and add the following url.
+```
+ALLOWED_HOSTS = *
+DEBUG=1
+PYTHON_VERSION=3.10.9
+DB_NAME=<your_db_name>
+DB_PASSWORD=<your_db_password>
+DB_USER=<your_db_user>
+```
+### Run the following command
+```sh
+python manage.py collectstatic #only if needed
+python manage.py makemigrations #only if needed
+python manage.py migrate #only if needed
+python manage.py runserver
+```
 
-- Implement the mentioned functionalities by writing your code & hosting it on [Render](https://render.com/). Please make sure the URLs follow the the structure provided in the assignment. Deviations in the route names will result in rejection even if the endpoints work as expected.
-- Submit the Render hosted link for the deployed APIs and Github or Gitlab public repository link for the deployed code in the form below.
-- **Provide the list of the functional testcases** specific to each API endpoint with description in an Excel sheet ([**sample sheet**](https://www.notion.so/Back-End-Assignment-REUNION-bd5e48b7aab54e91b6ee8829c3e30c4a)) & submit it via the form below.
-    - Don’t write all the testcase but try to focus on the important testcases according to your understanding.
-    
+### Credentials
 
-    **Sample excel file for tests**
-    [Sample Test Case](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/04d601bc-47d5-45f9-bcd5-eba09e7b6acc/Untitled.xlsx)
-    
+```
+Email:- ankit@gmail.com
+Password:-testing321
 
-    
-- **Implement the testcases** using the language specific framework or library like Mocha or Chai.js for Node.
-    - Commit the testcase code in the git repo & provide the commands to run the testcases.
-- **Create a single docker file for running the** **full web app under a single docker image**. Commit the docker file under the same repo & provide the link.
-    - Please note docker file should take care of the database, running testcases & other dependencies installation.
+Email:- mohit@gmail.com
+Password:-testing321
+
+Email:- manish@gmail.com
+Password:-testing321
+
+Email:- john@gmail.com
+Password:-testing321
+```

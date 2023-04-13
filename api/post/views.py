@@ -1,6 +1,6 @@
 from rest_framework.generics import CreateAPIView, RetrieveDestroyAPIView, ListAPIView
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
@@ -13,6 +13,11 @@ from .permissions import DeleteOwnPost
 
 
 class PostListCreateView(CreateAPIView):
+    """
+    A view creating post by authenticated users
+
+    """
+
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -22,6 +27,11 @@ class PostListCreateView(CreateAPIView):
 
 
 class PostRetrieveDestroyView(RetrieveDestroyAPIView):
+    """
+    A view for retrieving post by id and deleting post by id
+
+    """
+
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, DeleteOwnPost]
@@ -34,6 +44,11 @@ class PostRetrieveDestroyView(RetrieveDestroyAPIView):
 
 
 class PostLikeView(APIView):
+    """
+    A view for liking a post requires users to be authenticated and postID
+
+    """
+
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def post(self, request, id):
@@ -55,6 +70,11 @@ class PostLikeView(APIView):
 
 
 class PostUnlikeView(APIView):
+    """
+    A view for unliking a post requires users to be authenticated and postID
+
+    """
+
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def post(self, request, id):
@@ -78,7 +98,13 @@ class PostUnlikeView(APIView):
 
 
 class PostListByUserAPIView(ListAPIView):
+    """
+    A view for retrieving all the post created by authenticated users
+
+    """
+
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -86,6 +112,11 @@ class PostListByUserAPIView(ListAPIView):
 
 
 class CommentCreateAPIView(CreateAPIView):
+    """
+    A view for adding comments on the post, requires user's to be authenticated and postID
+
+    """
+
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]

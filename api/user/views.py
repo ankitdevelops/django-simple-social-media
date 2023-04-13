@@ -9,6 +9,11 @@ from rest_framework.response import Response
 
 
 class UserProfileView(generics.RetrieveAPIView):
+    """
+    A view for retrieving the authenticated user's profile.
+
+    """
+
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -17,6 +22,11 @@ class UserProfileView(generics.RetrieveAPIView):
 
 
 class FollowUserView(APIView):
+    """
+    A view for following a user.
+
+    """
+
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -52,6 +62,11 @@ class FollowUserView(APIView):
 
 
 class UnFollowUserView(APIView):
+    """
+    A view for unfollowing a user.
+
+    """
+
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
